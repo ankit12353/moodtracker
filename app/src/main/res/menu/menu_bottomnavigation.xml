@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_entries"
+        android:icon="@drawable/ic_entries"
+        android:title="@string/text_entries" />
+    <item
+        android:id="@+id/navigation_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/text_calendar" />
+    <item
+        android:id="@+id/navigation_add_entry"
+        android:icon="@drawable/ic_add_entry"
+        android:title="@string/text_add_entry" />
+    <item
+        android:id="@+id/navigation_stats"
+        android:icon="@drawable/ic_stats"
+        android:title="@string/text_stats" />
+    <item
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/text_more" />
+</menu>

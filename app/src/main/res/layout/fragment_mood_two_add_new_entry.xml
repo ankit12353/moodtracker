@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.MoodTwoAddNewEntryFragment">
+
+    <ImageView
+        android:id="@+id/ivSelectedMood"
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_20" />
+
+    <TextView
+        android:id="@+id/tvSelectedMood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivSelectedMood"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_3"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_15" />
+
+    <TextView
+        android:id="@+id/tv_detail_mood"
+        style="@style/TextHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSelectedMood"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/text_what_have_you_been_up_to"
+        android:textColor="@color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_mood_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_detail_mood"
+        android:layout_marginTop="@dimen/margin_15" />
+
+    <EditText
+        android:id="@+id/et_note"
+        android:hint="Add Note....."
+        android:background="@color/theme_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_15"
+        android:padding="@dimen/margin_15"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/iv_forward_btn_mood_two"/>
+
+    <ImageView
+        android:id="@+id/iv_forward_btn_mood_two"
+        android:layout_width="@dimen/margin_50"
+        android:layout_height="@dimen/margin_50"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_15"
+        android:background="@drawable/circular"
+        android:padding="@dimen/margin_5"
+        android:src="@drawable/ic_tick"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layou_mood_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_10"
+    android:background="@color/white"
+    android:padding="@dimen/dimen_10">
+
+    <ImageView
+        android:id="@+id/iv_mood"
+        android:layout_width="@dimen/dimen_62"
+        android:layout_centerVertical="true"
+        android:layout_height="@dimen/dimen_62" />
+
+    <LinearLayout
+        android:layout_toRightOf="@id/iv_mood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_mood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_mood_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_time"
+        android:textSize="@dimen/text_9"
+        android:layout_marginLeft="@dimen/dimen_156"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/iv_update_delete"
+        android:layout_width="@dimen/dimen_23"
+        android:layout_height="@dimen/dimen_23"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_5"
+        android:background="@drawable/circular"
+        android:src="@drawable/ic_dropdown"/>
+
+</RelativeLayout>

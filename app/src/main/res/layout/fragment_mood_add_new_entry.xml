@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.MoodAddNewEntryFragment">
+
+    <TextView
+        android:id="@+id/tv_tell_mood"
+        style="@style/TextHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_50"
+        android:text="@string/text_tell_us_about_your_mood" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tell_mood"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_35"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_2"
+            android:src="@drawable/ic_calendar" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_date_moodfrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:drawableRight="@drawable/ic_dropdown"
+                tools:text="ankit" />
+            <LinearLayout
+                android:layout_marginTop="-4dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_2"
+            android:layout_marginLeft="@dimen/dimen_35"
+            android:src="@drawable/ic_clock" />
+
+        <LinearLayout
+            android:id="@+id/ll_time_moodfrag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_time_moodfrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:drawableRight="@drawable/ic_dropdown"
+                tools:text="ankit" />
+            <LinearLayout
+                android:layout_marginTop="-4dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/margin_40" />
+
+
+</RelativeLayout>

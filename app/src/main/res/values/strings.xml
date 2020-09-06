@@ -5,9 +5,6 @@
     <string name="text_calendar">Calendar</string>
     <string name="text_more">More</string>
     <string name="text_add_entry">Add Entry</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_add_a_new_entry">Add a new entry</string>
     <string name="text_tell_us_about_your_mood">Tell us about your mood</string>
     <string name="text_what_have_you_been_up_to">What have you been up to?</string>

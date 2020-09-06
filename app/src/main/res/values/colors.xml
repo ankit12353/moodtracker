@@ -9,4 +9,5 @@
     <color name="theme_color">#7bccb5</color>
     <color name="background_color">#E3F0F4</color>
     <color name="bottomnavigation_background">#6d7b8d</color>
+    <color name="splash_background">#FCFCFC</color>
 </resources>

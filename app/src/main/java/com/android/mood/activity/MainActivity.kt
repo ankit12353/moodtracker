@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navigation_add_entry -> {
                     val date = SimpleDateFormat("dd/MM/yyy").format(Date())
-                    //val time = SimpleDateFormat("HH:mm").format(Date())
                     val intent = Intent(this@MainActivity,NoteActivity::class.java)
                     intent.putExtra(DATE_CALFRAG_NOTE,date)
                     startActivity(intent)

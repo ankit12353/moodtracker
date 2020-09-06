@@ -24,6 +24,7 @@
     <dimen name="emoji_height">114dp</dimen>
     <dimen name="emoji2_width">68dp</dimen>
     <dimen name="emoji2_height">92dp</dimen>
+    <dimen name="splash_size">160dp</dimen>
 
     //text sizes
     <dimen name="text_header">25sp</dimen>

@@ -9,7 +9,7 @@ import android.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
 import com.android.mood.R
 import com.android.mood.constants.Constant
-import com.android.mood.constants.Constant.DATE_CALFRAG_NOTE
+import com.android.mood.constants.Constant.DATE
 import com.android.mood.fragment.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
@@ -54,8 +54,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navigation_add_entry -> {
                     val date = SimpleDateFormat("dd/MM/yyy").format(Date())
-                    val intent = Intent(this@MainActivity,NoteActivity::class.java)
-                    intent.putExtra(DATE_CALFRAG_NOTE,date)
+                    val intent = Intent(this@MainActivity,MoodActivity::class.java)
+                    intent.putExtra(DATE,date)
                     startActivity(intent)
                 }
                 R.id.navigation_stats -> {
@@ -75,5 +75,12 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_bottomnav,entriesFragment)
+            .commit()
     }
 }

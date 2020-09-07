@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/back_btn"
+        android:id="@+id/back_btn_topbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
@@ -15,7 +15,7 @@
         android:background="@drawable/ic_backbtn" />
 
     <TextView
-        android:id="@+id/tv_selectedDate"
+        android:id="@+id/tv_date_topbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -24,6 +24,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/back_btn"
+        android:layout_below="@id/back_btn_topbar"
         android:background="@color/theme_color" />
 </RelativeLayout>

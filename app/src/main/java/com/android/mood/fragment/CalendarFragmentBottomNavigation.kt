@@ -37,7 +37,7 @@ class CalendarFragmentBottomNavigation : Fragment() {
         calendarView?.setOnDateChangeListener { view, year, month, dayOfMonth ->
             val date = Utils().formateDate(dayOfMonth,(month+1),year)
             val intent = Intent(activity,NoteActivity::class.java)
-            intent.putExtra(DATE_CALFRAG_NOTE,date)
+            intent.putExtra(DATE,date)
             activity?.startActivity(intent)
         }
         return v

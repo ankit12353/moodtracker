@@ -1,9 +1,8 @@
 package com.android.mood.fragment
 
-import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.SqliteDBOpenHelper
+import com.android.mood.activity.MoodActivity
 import com.android.mood.activity.NoteActivity
 import com.android.mood.adapter.MoodTwoAdapter
 import com.android.mood.constants.Constant.*
@@ -32,7 +32,7 @@ class MoodTwoAddNewEntryFragment : Fragment() {
     private var ivSelectedMood: ImageView? = null
     private var rvMoodTwo: RecyclerView? = null
     private var ivForwardBtn: ImageView? = null
-    private var data: MoodDetailAllModel? = null
+    private var moodObject: MoodDetailAllModel? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,9 +62,7 @@ class MoodTwoAddNewEntryFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_mood_two_add_new_entry, container, false)
 
         init()
-        val moodAddNewEntryFragment = MoodAddNewEntryFragment()
-        val moodDetail: MoodModel =
-            moodAddNewEntryFragment.getMoodDataOfPosition(moodPosition!!.toInt())
+        val moodDetail: MoodModel =MoodActivity().getMoodDataOfPosition(moodPosition!!.toInt())
         tvSelectedMood!!.text = moodDetail.moodName
         ivSelectedMood!!.setImageResource(moodDetail.moodImage)
 
@@ -103,8 +101,12 @@ class MoodTwoAddNewEntryFragment : Fragment() {
         }
         //saving data to database
         val dbHandler = SqliteDBOpenHelper(mContext!!, null)
-        data = MoodDetailAllModel(date!!, moodPosition!!, moodTwoText.toString(), time!!, note)
-        dbHandler.addMoods(data!!)
-        (activity as NoteActivity).finishActivity()
+        moodObject = MoodDetailAllModel(date!!, moodPosition!!, moodTwoText.toString(), time!!, note)
+        dbHandler.addMoods(moodObject!!)
+        val intent = Intent(mContext,NoteActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(DATE,moodObject!!.date)
+        startActivity(intent)
+        (activity as MoodActivity).finishActivity()
     }
 }

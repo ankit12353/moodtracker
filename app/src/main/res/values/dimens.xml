@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     //dimens
+    <dimen name="dimen_1">1dp</dimen>
     <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_3">3dp</dimen>
     <dimen name="margin_5">5dp</dimen>

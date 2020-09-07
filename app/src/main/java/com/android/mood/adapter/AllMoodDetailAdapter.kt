@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.SqliteDBOpenHelper
-import com.android.mood.fragment.MoodAddNewEntryFragment
+import com.android.mood.activity.MoodActivity
 import com.android.mood.model.MoodDetailAllModel
 import com.android.mood.model.MoodModel
 
@@ -37,9 +36,8 @@ class AllMoodDetailAdapter(private val mContext: Context,private val moodList : 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val moodAddNewEntryFragment = MoodAddNewEntryFragment()
         val mood = moodList[position]
-        val moodDetailPosi : MoodModel = moodAddNewEntryFragment.getMoodDataOfPosition((mood.moodPosition).toInt())
+        val moodDetailPosi : MoodModel = MoodActivity().getMoodDataOfPosition((mood.moodPosition).toInt())
         holder.date.text = mood.date
         holder.mood.text = moodDetailPosi.moodName
         holder.moodTwo.text = mood.moodTwo

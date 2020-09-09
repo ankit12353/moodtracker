@@ -1,9 +1,11 @@
 package com.android.mood.activity
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,9 +36,9 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mood)
         date = intent.extras?.getString(DATE)
-        time = SimpleDateFormat("KK:mm a", Locale.getDefault()).format(Date())
-        tv_date_mood.text = date!!
-        tv_time_mood.text = time!!
+        time = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+        tv_date_dialog.text = date!!
+        tv_time_dialog.text = time!!
         tv_date_topbar.text = date!!
 
         container.visibility = View.VISIBLE
@@ -46,19 +48,16 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         rv_mood.setHasFixedSize(true)
         rv_mood.adapter= MoodAdapter(this,moods,this)
 
-        tv_time_mood.setOnClickListener(View.OnClickListener {
-            openTimeDialog()
-        })
-        back_btn_topbar.setOnClickListener(View.OnClickListener {
-            performBackBtn()
-        })
+        tv_time_dialog.setOnClickListener{openTimeDialog()}
+        tv_date_dialog.setOnClickListener { openDateDialog() }
+        back_btn_topbar.setOnClickListener{performBackBtn()}
 
     }
 
     override fun onMoodSelected(position: Int) {
         openMoodTwoFragment(position)
     }
-    fun openMoodTwoFragment(moodPosition: Int) {
+    private fun openMoodTwoFragment(moodPosition: Int) {
         container.visibility = View.GONE
         container_fragment.visibility = View.VISIBLE
         val moodTwoAddNewEntryFragment = MoodTwoAddNewEntryFragment()
@@ -77,8 +76,8 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     private fun openTimeDialog(){
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val currentMinute = Calendar.getInstance().get(Calendar.MINUTE)
-        val mTimePicker = TimePickerDialog(this,object : TimePickerDialog.OnTimeSetListener{
-            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val mTimePicker = TimePickerDialog(this,
+            TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                 var am_pm = ""
                 val datetime = Calendar.getInstance()
                 datetime[Calendar.HOUR_OF_DAY] = hourOfDay
@@ -88,10 +87,25 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
 
                 val hr = Utils().timeTotwelvehr(hourOfDay)
                 time= Utils().formateTime(hr,minute,am_pm)
-                tv_time_mood!!.text = time
-            }
-        },currentHour,currentMinute,false)
+                tv_time_dialog!!.text = time
+            },currentHour,currentMinute,false)
         mTimePicker.show()
+    }
+
+    private fun openDateDialog() {
+        val c = Calendar.getInstance()
+        val mYear = c[Calendar.YEAR]
+        val mDay = c[Calendar.DAY_OF_MONTH]
+        val mMonth = c[Calendar.MONTH]
+
+        val mDatePicker = DatePickerDialog(this,
+            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                date = Utils().formateDate(dayOfMonth,(month+1),year)
+                tv_date_dialog.text = date!!
+                tv_date_topbar.text = date!!
+            },mYear,mMonth,mDay)
+        mDatePicker.datePicker.maxDate= c.timeInMillis
+        mDatePicker.show()
     }
 
     fun getMoodDataOfPosition(position : Int) : MoodModel{

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.MoodAddNewEntryFragment">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/mood_topbar"
@@ -44,7 +43,7 @@
                 android:src="@drawable/ic_calendar" />
 
             <TextView
-                android:id="@+id/tv_date_mood"
+                android:id="@+id/tv_date_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangular_border"
@@ -61,7 +60,7 @@
                 android:src="@drawable/ic_clock" />
 
             <TextView
-                android:id="@+id/tv_time_mood"
+                android:id="@+id/tv_time_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangular_border"

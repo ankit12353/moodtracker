@@ -9,13 +9,13 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
-import com.android.mood.SqliteDBOpenHelper
+import com.android.mood.helper.DataBaseHelper
 import com.android.mood.activity.MoodActivity
 import com.android.mood.model.MoodDetailAllModel
 import com.android.mood.model.MoodModel
 
 class AllMoodDetailAdapter(private val mContext: Context,private val moodList : ArrayList<MoodDetailAllModel>,private val performOperation: PerformOperation) : RecyclerView.Adapter<AllMoodDetailAdapter.ViewHolder>(){
-    val sqliteHelper = SqliteDBOpenHelper(mContext,null)
+    val sqliteHelper = DataBaseHelper(mContext, null)
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val date = view.findViewById<TextView>(R.id.tv_date)
         val mood = view.findViewById<TextView>(R.id.tv_mood)

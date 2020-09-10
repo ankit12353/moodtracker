@@ -1,9 +1,7 @@
 package com.android.mood.fragment
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
-import com.android.mood.SqliteDBOpenHelper
-import com.android.mood.activity.NoteActivity
+import com.android.mood.helper.DataBaseHelper
 import com.android.mood.adapter.AllMoodDetailAdapter
 import com.android.mood.model.MoodDetailAllModel
 import java.text.SimpleDateFormat
@@ -52,15 +49,16 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllMoodDetailAdapter.Perform
     }
 
     private fun getAllMoodDetailsFromDatabase(){
-        val dbHandler = SqliteDBOpenHelper(mContext!!,null)
+        val dbHandler =
+            DataBaseHelper(mContext!!, null)
         val result = dbHandler.getMoodDetailsAll()
         if(result.moveToFirst()){
             do {
-                val date = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_DATE))
-                val moodPosition = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_MOOD_POSI))
-                val moodTwo = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_MOOD_TWO))
-                val time = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_TIME))
-                val note = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_NOTE))
+                val date = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_DATE))
+                val moodPosition = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_POSI))
+                val moodTwo = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_TWO))
+                val time = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_TIME))
+                val note = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_NOTE))
                 moodList.add(MoodDetailAllModel(date,moodPosition,moodTwo,time,note))
             } while (result.moveToNext())
         }

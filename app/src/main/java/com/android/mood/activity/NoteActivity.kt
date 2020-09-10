@@ -7,7 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mood.constants.Constant.*
 import com.android.mood.R
-import com.android.mood.SqliteDBOpenHelper
+import com.android.mood.helper.DataBaseHelper
 import com.android.mood.adapter.AllMoodDetailAdapter
 import com.android.mood.model.MoodDetailAllModel
 import kotlinx.android.synthetic.main.activity_note.*
@@ -48,16 +48,16 @@ class NoteActivity : AppCompatActivity() ,AllMoodDetailAdapter.PerformOperation{
     }
 
     private fun getMoodOfSelectedDate() {
-        val dbHandler = SqliteDBOpenHelper(this, null)
+        val dbHandler = DataBaseHelper(this, null)
         val result = dbHandler.getMoodDetail(date!!)
         if (result.moveToFirst()) {
             do {
                 rv_entry_date.visibility = View.VISIBLE
                 tvNoEntryFound.visibility = View.GONE
-                val moodPosition = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_MOOD_POSI))
-                val moodTwo = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_MOOD_TWO))
-                val time = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_TIME))
-                val note = result.getString(result.getColumnIndex(SqliteDBOpenHelper.COLUMN_NOTE))
+                val moodPosition = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_POSI))
+                val moodTwo = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_TWO))
+                val time = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_TIME))
+                val note = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_NOTE))
                 moodList.add(MoodDetailAllModel(date!!,moodPosition,moodTwo,time,note))
             } while (result.moveToNext())
         } else {

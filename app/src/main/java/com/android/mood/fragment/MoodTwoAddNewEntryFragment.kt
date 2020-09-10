@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
-import com.android.mood.SqliteDBOpenHelper
+import com.android.mood.helper.DataBaseHelper
 import com.android.mood.activity.MoodActivity
 import com.android.mood.activity.NoteActivity
 import com.android.mood.adapter.MoodTwoAdapter
@@ -100,7 +100,8 @@ class MoodTwoAddNewEntryFragment : Fragment() {
             }
         }
         //saving data to database
-        val dbHandler = SqliteDBOpenHelper(mContext!!, null)
+        val dbHandler =
+            DataBaseHelper(mContext!!, null)
         moodObject = MoodDetailAllModel(date!!, moodPosition!!, moodTwoText.toString(), time!!, note)
         dbHandler.addMoods(moodObject!!)
         val intent = Intent(mContext,NoteActivity::class.java)

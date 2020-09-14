@@ -2,18 +2,16 @@ package com.android.mood.activity
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.DatePicker
-import android.widget.TimePicker
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.mood.R
-import com.android.mood.adapter.AllMoodDetailAdapter
 import com.android.mood.adapter.MoodAdapter
 import com.android.mood.constants.Constant
 import com.android.mood.constants.Constant.DATE
+import com.android.mood.fragment.CustomizeMoodFragment
 import com.android.mood.fragment.MoodTwoAddNewEntryFragment
 import com.android.mood.model.MoodModel
 import com.android.mood.utils.Utils
@@ -25,7 +23,7 @@ import java.util.*
 class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     private var time : String?= null
     private var date : String ?= null
-    private val moods = arrayListOf<MoodModel>(
+    private val moodList = arrayListOf<MoodModel>(
         MoodModel("Happy",R.drawable.happy),
         MoodModel("Meh",R.drawable.meh),
         MoodModel("Okay",R.drawable.okay),
@@ -46,18 +44,28 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
 
         rv_mood.layoutManager= GridLayoutManager(this,5)
         rv_mood.setHasFixedSize(true)
-        rv_mood.adapter= MoodAdapter(this,moods,this)
+        rv_mood.adapter= MoodAdapter(this,moodList,this)
 
         tv_time_dialog.setOnClickListener{openTimeDialog()}
         tv_date_dialog.setOnClickListener { openDateDialog() }
         back_btn_topbar.setOnClickListener{performBackBtn()}
-
+        iv_customize_mood.setOnClickListener{customizeMood()}
     }
 
     override fun onMoodSelected(position: Int) {
         openMoodTwoFragment(position)
     }
-    private fun openMoodTwoFragment(moodPosition: Int) {
+    private fun customizeMood(){
+        container.visibility = View.GONE
+        container_fragment.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_fragment, CustomizeMoodFragment())
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack(null)
+            .commit()
+
+    }
+     fun openMoodTwoFragment(moodPosition: Int) {
         container.visibility = View.GONE
         container_fragment.visibility = View.VISIBLE
         val moodTwoAddNewEntryFragment = MoodTwoAddNewEntryFragment()
@@ -109,8 +117,8 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     }
 
     fun getMoodDataOfPosition(position : Int) : MoodModel{
-        val moodText = moods[position].moodName
-        val moodImage = moods[position].moodImage
+        val moodText = moodList[position].moodName
+        val moodImage = moodList[position].moodImage
         return MoodModel(moodText,moodImage)
     }
     fun finishActivity() {
@@ -118,6 +126,7 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     }
     private fun performBackBtn() {
         if(supportFragmentManager.backStackEntryCount>0){
+//            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(this.currentFocus!!.windowToken,0)
             supportFragmentManager.popBackStack()
             container.visibility = View.VISIBLE
             container_fragment.visibility = View.GONE

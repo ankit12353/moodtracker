@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mood.constants.Constant.*
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
-import com.android.mood.adapter.AllMoodDetailAdapter
+import com.android.mood.adapter.AllEntryDetailAdapter
 import com.android.mood.model.MoodDetailAllModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.layout_topbar.*
@@ -16,11 +16,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class NoteActivity : AppCompatActivity() ,AllMoodDetailAdapter.PerformOperation{
+class NoteActivity : AppCompatActivity() ,AllEntryDetailAdapter.PerformOperation{
 
     private var date: String? = null
     private var moodList : ArrayList<MoodDetailAllModel> = ArrayList()
-    private var adapter : AllMoodDetailAdapter?= null
+    private var adapter : AllEntryDetailAdapter?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class NoteActivity : AppCompatActivity() ,AllMoodDetailAdapter.PerformOperation{
         Collections.sort(moodList,Comparator<MoodDetailAllModel>{t1,t2 -> SimpleDateFormat("hh:mm a").parse(t1.time).compareTo(SimpleDateFormat("hh:mm a").parse(t2.time))})
         rv_entry_date.layoutManager = LinearLayoutManager(this)
         rv_entry_date.setHasFixedSize(true)
-        adapter = AllMoodDetailAdapter(this,moodList,this)
+        adapter = AllEntryDetailAdapter(this,moodList,this)
         rv_entry_date.adapter = adapter
 
         back_btn_topbar.setOnClickListener(View.OnClickListener {
@@ -49,7 +49,7 @@ class NoteActivity : AppCompatActivity() ,AllMoodDetailAdapter.PerformOperation{
 
     private fun getMoodOfSelectedDate() {
         val dbHandler = DataBaseHelper(this, null)
-        val result = dbHandler.getMoodDetail(date!!)
+        val result = dbHandler.getEntryDetail(date!!)
         if (result.moveToFirst()) {
             do {
                 rv_entry_date.visibility = View.VISIBLE

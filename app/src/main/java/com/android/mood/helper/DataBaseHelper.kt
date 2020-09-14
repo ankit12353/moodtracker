@@ -14,8 +14,8 @@ class DataBaseHelper(mContext : Context, factory: SQLiteDatabase.CursorFactory?)
 ) {
     override fun onCreate(db: SQLiteDatabase?) {
         val createTableMood = "CREATE TABLE $TABLE_NAME ($COLUMN_DATE TEXT ,$COLUMN_TIME TEXT,$COLUMN_MOOD_POSI TEXT,$COLUMN_MOOD_TWO TEXT,$COLUMN_NOTE TEXT)"
-        val tableMoodList = "CREATE TABLE $TABLE_MOOD_LIST($MOOD_NAME TEXT ,$MOOD_IMAGE BLOB)"
-        val tableMoodTwoList = "CREATE TABLE $TABLE_MOODTWO_LIST($MOODTWO_NAME TEXT ,$MOODTWO_IMAGE BLOB)"
+        val tableMoodList = "CREATE TABLE $TABLE_MOOD_LIST($MOOD_NAME TEXT PRIMARY KEY ,$MOOD_IMAGE TEXT)"
+        val tableMoodTwoList = "CREATE TABLE $TABLE_MOODTWO_LIST($MOODTWO_NAME TEXT PRIMARY KEY ,$MOODTWO_IMAGE TEXT)"
         db!!.execSQL(createTableMood)
         db.execSQL(tableMoodList)
         db.execSQL(tableMoodTwoList)
@@ -26,7 +26,7 @@ class DataBaseHelper(mContext : Context, factory: SQLiteDatabase.CursorFactory?)
         onCreate(db)
     }
 
-    fun addMoods(receivedData : MoodDetailAllModel){
+    fun addEntry(receivedData : MoodDetailAllModel){
         val cv = ContentValues()
         cv.put(COLUMN_MOOD_POSI,receivedData.moodPosition)
         cv.put(COLUMN_DATE,receivedData.date)
@@ -38,25 +38,21 @@ class DataBaseHelper(mContext : Context, factory: SQLiteDatabase.CursorFactory?)
         db.close()
     }
 
-    fun getMoodDetail(date : String) : Cursor{
+    fun getEntryDetail(date : String) : Cursor{
         val db = this.readableDatabase
         val result = db.rawQuery("Select * from $TABLE_NAME Where $COLUMN_DATE = ?", arrayOf<String>(date))
         return result
     }
 
-    fun getMoodDetailsAll() : Cursor{
+    fun getAllEntries() : Cursor{
         val db = this.readableDatabase
         val result = db.rawQuery("Select * from $TABLE_NAME",null)
         return result
     }
 
-    fun deleteData(date : String,time : String){
+    fun deleteEntry(date : String,time : String){
         val db = this.writableDatabase
         db!!.delete(TABLE_NAME,"$COLUMN_DATE=? and $COLUMN_TIME=?", arrayOf(date,time))
-    }
-
-    fun addMoodList(name : String,image : Byte){
-
     }
 
     companion object {

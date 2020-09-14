@@ -77,6 +77,27 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/margin_40" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_15"
+            android:layout_below="@id/rv_mood">
+            <ImageView
+                android:id="@+id/iv_customize_mood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circular_border"
+                android:padding="@dimen/margin_8"
+                android:src="@drawable/ic_edit" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_9"
+                android:text="Edit Moods"/>
+        </LinearLayout>
     </RelativeLayout>
 
 

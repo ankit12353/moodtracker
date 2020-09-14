@@ -16,12 +16,12 @@ import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.activity.MoodActivity
 import com.android.mood.activity.NoteActivity
-import com.android.mood.adapter.MoodTwoAdapter
+import com.android.mood.adapter.MoodAdapter
 import com.android.mood.constants.Constant.*
 import com.android.mood.model.MoodDetailAllModel
 import com.android.mood.model.MoodModel
 
-class MoodTwoAddNewEntryFragment : Fragment() {
+class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
 
     private var mContext: Context? = null
     private var v: View? = null
@@ -54,11 +54,7 @@ class MoodTwoAddNewEntryFragment : Fragment() {
         MoodModel("Yoga", R.drawable.yoga)
     )
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         v = inflater.inflate(R.layout.fragment_mood_two_add_new_entry, container, false)
 
         init()
@@ -68,7 +64,7 @@ class MoodTwoAddNewEntryFragment : Fragment() {
 
         rvMoodTwo!!.layoutManager = GridLayoutManager(mContext, 5)
         rvMoodTwo!!.setHasFixedSize(true)
-        rvMoodTwo!!.adapter = MoodTwoAdapter(mContext!!, moodTwo, ivForwardBtn!!)
+        rvMoodTwo!!.adapter = MoodAdapter(mContext!!, moodTwo, this)
 
         ivForwardBtn!!.setOnClickListener(View.OnClickListener {
             getSelectedMoodTwo()
@@ -103,11 +99,15 @@ class MoodTwoAddNewEntryFragment : Fragment() {
         val dbHandler =
             DataBaseHelper(mContext!!, null)
         moodObject = MoodDetailAllModel(date!!, moodPosition!!, moodTwoText.toString(), time!!, note)
-        dbHandler.addMoods(moodObject!!)
+        dbHandler.addEntry(moodObject!!)
         val intent = Intent(mContext,NoteActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra(DATE,moodObject!!.date)
         startActivity(intent)
         (activity as MoodActivity).finishActivity()
+    }
+
+    override fun onMoodSelected(position: Int) {
+        ivForwardBtn!!.visibility= View.VISIBLE
     }
 }

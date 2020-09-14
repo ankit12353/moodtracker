@@ -11,20 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
-import com.android.mood.adapter.AllMoodDetailAdapter
+import com.android.mood.adapter.AllEntryDetailAdapter
 import com.android.mood.model.MoodDetailAllModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
-class EntriesFragmentBottomNavigation : Fragment() ,AllMoodDetailAdapter.PerformOperation{
+class EntriesFragmentBottomNavigation : Fragment() ,AllEntryDetailAdapter.PerformOperation{
     private var tvNoEntryFound :TextView? = null
     private var v : View?=null
     private var mContext : Context? = null
     private var moodList : ArrayList<MoodDetailAllModel> = ArrayList()
     private var rvAllEntries : RecyclerView?= null
-    private var adapter : AllMoodDetailAdapter?= null
+    private var adapter : AllEntryDetailAdapter?= null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,7 +37,7 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllMoodDetailAdapter.Perform
         getAllMoodDetailsFromDatabase()
         rvAllEntries!!.layoutManager = LinearLayoutManager(mContext!!)
         rvAllEntries!!.setHasFixedSize(true)
-        adapter = AllMoodDetailAdapter(mContext!!, moodList, this)
+        adapter = AllEntryDetailAdapter(mContext!!, moodList, this)
         rvAllEntries!!.adapter = adapter
 
         return v
@@ -51,7 +51,7 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllMoodDetailAdapter.Perform
     private fun getAllMoodDetailsFromDatabase(){
         val dbHandler =
             DataBaseHelper(mContext!!, null)
-        val result = dbHandler.getMoodDetailsAll()
+        val result = dbHandler.getAllEntries()
         if(result.moveToFirst()){
             do {
                 val date = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_DATE))

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_20">
+
+        <ImageView
+            android:id="@+id/iv_mood_image"
+            android:layout_width="@dimen/emoji_size"
+            android:layout_height="@dimen/emoji_size"
+            android:src="@drawable/happy" />
+
+        <EditText
+            android:id="@+id/et_mood_name_customize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:background="@drawable/rectangular_border"
+            android:hint="@string/text_enter_mood_name"
+            android:padding="@dimen/margin_8" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_customize_mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"/>
+
+</LinearLayout>

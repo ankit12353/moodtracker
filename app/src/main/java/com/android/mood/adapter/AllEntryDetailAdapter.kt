@@ -14,7 +14,7 @@ import com.android.mood.activity.MoodActivity
 import com.android.mood.model.MoodDetailAllModel
 import com.android.mood.model.MoodModel
 
-class AllMoodDetailAdapter(private val mContext: Context,private val moodList : ArrayList<MoodDetailAllModel>,private val performOperation: PerformOperation) : RecyclerView.Adapter<AllMoodDetailAdapter.ViewHolder>(){
+class AllEntryDetailAdapter(private val mContext: Context, private val moodList : ArrayList<MoodDetailAllModel>, private val performOperation: PerformOperation) : RecyclerView.Adapter<AllEntryDetailAdapter.ViewHolder>(){
     val sqliteHelper = DataBaseHelper(mContext, null)
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val date = view.findViewById<TextView>(R.id.tv_date)
@@ -67,7 +67,7 @@ class AllMoodDetailAdapter(private val mContext: Context,private val moodList : 
         popupMenu.show()
     }
     private fun delete(selectedMood : MoodDetailAllModel){
-        sqliteHelper.deleteData(selectedMood.date,selectedMood.time)
+        sqliteHelper.deleteEntry(selectedMood.date,selectedMood.time)
         performOperation.delete(selectedMood)
     }
 }

@@ -13,8 +13,7 @@
         <ImageView
             android:id="@+id/iv_mood_image"
             android:layout_width="@dimen/emoji_size"
-            android:layout_height="@dimen/emoji_size"
-            android:src="@drawable/happy" />
+            android:layout_height="@dimen/emoji_size"/>
 
         <EditText
             android:id="@+id/et_mood_name_customize"

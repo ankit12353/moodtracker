@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_item_mood_two"
+    android:id="@+id/rl_item_mood"
     android:layout_width="@dimen/emoji2_width"
     android:layout_height="@dimen/emoji2_height"
     android:layout_margin="@dimen/margin_3"
@@ -16,7 +16,7 @@
         app:cardCornerRadius="30dp">
 
         <ImageView
-            android:id="@+id/iv_layout_mood_two"
+            android:id="@+id/iv_layout_mood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -24,7 +24,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/tv_layout_mood_two"
+        android:id="@+id/tv_layout_mood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cv_emoji"

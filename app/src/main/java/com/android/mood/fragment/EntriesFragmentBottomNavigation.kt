@@ -64,6 +64,7 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllEntryDetailAdapter.Perfor
         }
         Collections.sort(moodList,Comparator<MoodDetailAllModel> { o1, o2 -> SimpleDateFormat("dd/MM/yyyyhh:mm a").parse(o1.date+o1.time).compareTo(SimpleDateFormat("dd/MM/yyyyhh:mm a").parse(o2.date+o2.time)) })
         if(moodList.size!= 0) tvNoEntryFound!!.visibility = View.GONE
+        result.close()
     }
 
     override fun delete(selectedMood : MoodDetailAllModel) {

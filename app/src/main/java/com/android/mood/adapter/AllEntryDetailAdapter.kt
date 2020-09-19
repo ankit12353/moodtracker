@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.activity.MoodActivity
+import com.android.mood.model.MoodBitmapModel
 import com.android.mood.model.MoodDetailAllModel
 import com.android.mood.model.MoodModel
 
@@ -37,16 +38,15 @@ class AllEntryDetailAdapter(private val mContext: Context, private val moodList 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mood = moodList[position]
-        val moodDetailPosi : MoodModel = MoodActivity().getMoodDataOfPosition((mood.moodPosition).toInt())
+        val list = sqliteHelper.getMoodList()
         holder.date.text = mood.date
-        holder.mood.text = moodDetailPosi.moodName
+        holder.mood.text = list[mood.moodPosition.toInt()].moodName
         holder.moodTwo.text = mood.moodTwo
-        holder.moodImage.setImageResource(moodDetailPosi.moodImage)
+        holder.moodImage.setImageBitmap(list[mood.moodPosition.toInt()].moodImage)
         holder.time.text = "("+mood.time+")"
         holder.note.text = "Note: "+mood.note
         holder.ivPerformOperation.setOnClickListener(View.OnClickListener {
-            val selectedMood = moodList[holder.adapterPosition]
-            performOperation(selectedMood,holder.ivPerformOperation)
+            performOperation(moodList[holder.adapterPosition],holder.ivPerformOperation)
         })
     }
 

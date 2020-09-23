@@ -2,20 +2,22 @@ package com.android.mood.activity
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.mood.R
 import com.android.mood.adapter.MoodAdapter
 import com.android.mood.constants.Constant.*
-import com.android.mood.fragment.CustomizeMoodFragment
+import com.android.mood.fragment.AddNewMoodFragment
+import com.android.mood.fragment.AllMoodListFragment
 import com.android.mood.fragment.MoodTwoAddNewEntryFragment
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.model.MoodBitmapModel
-import com.android.mood.model.MoodModel
 import com.android.mood.utils.Utils
 import kotlinx.android.synthetic.main.activity_mood.*
 import kotlinx.android.synthetic.main.layout_topbar.*
@@ -28,8 +30,8 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     private var date : String ?= null
     private var adapter : MoodAdapter?= null
     private var moodList : ArrayList<MoodBitmapModel> = ArrayList()
+    private val addNewMoodFragment = AddNewMoodFragment()
     private val moodTwoAddNewEntryFragment = MoodTwoAddNewEntryFragment()
-    private val customizeMoodFragment = CustomizeMoodFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,7 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
 
         moodList = DataBaseHelper(this,null).getMoodList()
         date = intent.extras?.getString(DATE)
+
         time = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
         tv_date_dialog.text = date!!
         tv_time_dialog.text = time!!
@@ -54,7 +57,7 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         tv_time_dialog.setOnClickListener{openTimeDialog()}
         tv_date_dialog.setOnClickListener { openDateDialog() }
         back_btn_topbar.setOnClickListener{performBackBtn()}
-        iv_customize_mood.setOnClickListener{openCustomizeMood()}
+        edit_mood.setOnClickListener{openAllMoodFragment()}
         iv_forward_btn.setOnClickListener{ goForward() }
     }
 
@@ -62,19 +65,27 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         openMoodTwoFragment(position)
     }
 
-    private fun openCustomizeMood(){
-        iv_forward_btn.visibility = View.VISIBLE
+    private fun openAllMoodFragment(){
         container.visibility = View.GONE
         container_fragment.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container_fragment, customizeMoodFragment)
+            .replace(R.id.container_fragment, AllMoodListFragment())
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .addToBackStack(null)
             .commit()
     }
 
-     fun openMoodTwoFragment(moodPosition: Int) {
-         iv_forward_btn.visibility = View.VISIBLE
+    fun openAddNewMoodFragment(){
+        iv_forward_btn.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_fragment, addNewMoodFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun openMoodTwoFragment(moodPosition: Int) {
+        iv_forward_btn.visibility = View.VISIBLE
         container.visibility = View.GONE
         container_fragment.visibility = View.VISIBLE
         val bundle = Bundle()
@@ -126,24 +137,36 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     }
 
     private fun goForward() {
-        if (moodTwoAddNewEntryFragment.isVisible) {
+        if (addNewMoodFragment.isVisible) {
+            addNewMoodFragment.submitData()
+        } else if(moodTwoAddNewEntryFragment.isVisible){
             moodTwoAddNewEntryFragment.getSelectedMoodTwo()
-        } else if (customizeMoodFragment.isVisible) {
-            customizeMoodFragment.submitData()
         }
     }
 
     fun finishActivity() {
         finish()
     }
+
     private fun performBackBtn() {
-        if(customizeMoodFragment.isVisible){
-//            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(this.currentFocus!!.windowToken,0)
-            supportFragmentManager.popBackStack()
-            container.visibility = View.VISIBLE
-            container_fragment.visibility = View.GONE
-        } else {
-            finish()
+        when {
+            addNewMoodFragment.isVisible -> {
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(this.currentFocus!!.windowToken,0)
+                supportFragmentManager.popBackStack()
+                iv_forward_btn.visibility = View.GONE
+            }
+            moodTwoAddNewEntryFragment.isVisible -> {
+                finish()
+            }
+            supportFragmentManager.backStackEntryCount>0 -> {
+                supportFragmentManager.popBackStack()
+                container.visibility = View.VISIBLE
+                container_fragment.visibility = View.GONE
+                iv_forward_btn.visibility = View.GONE
+            }
+            else -> {
+                finish()
+            }
         }
     }
 
@@ -156,4 +179,5 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         moodList.add(custMood)
         adapter!!.notifyDataSetChanged()
     }
+
 }

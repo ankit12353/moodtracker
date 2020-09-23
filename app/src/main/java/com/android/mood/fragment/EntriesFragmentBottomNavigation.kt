@@ -22,7 +22,7 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllEntryDetailAdapter.Perfor
     private var tvNoEntryFound :TextView? = null
     private var v : View?=null
     private var mContext : Context? = null
-    private var moodList : ArrayList<MoodDetailAllModel> = ArrayList()
+    private var allEntriesList : ArrayList<MoodDetailAllModel> = ArrayList()
     private var rvAllEntries : RecyclerView?= null
     private var adapter : AllEntryDetailAdapter?= null
 
@@ -37,7 +37,7 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllEntryDetailAdapter.Perfor
         getAllMoodDetailsFromDatabase()
         rvAllEntries!!.layoutManager = LinearLayoutManager(mContext!!)
         rvAllEntries!!.setHasFixedSize(true)
-        adapter = AllEntryDetailAdapter(mContext!!, moodList, this)
+        adapter = AllEntryDetailAdapter(mContext!!, allEntriesList, this)
         rvAllEntries!!.adapter = adapter
 
         return v
@@ -49,8 +49,7 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllEntryDetailAdapter.Perfor
     }
 
     private fun getAllMoodDetailsFromDatabase(){
-        val dbHandler =
-            DataBaseHelper(mContext!!, null)
+        val dbHandler = DataBaseHelper(mContext!!, null)
         val result = dbHandler.getAllEntries()
         if(result.moveToFirst()){
             do {
@@ -59,23 +58,24 @@ class EntriesFragmentBottomNavigation : Fragment() ,AllEntryDetailAdapter.Perfor
                 val moodTwo = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_TWO))
                 val time = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_TIME))
                 val note = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_NOTE))
-                moodList.add(MoodDetailAllModel(date,moodPosition,moodTwo,time,note))
+                allEntriesList.add(MoodDetailAllModel(date,moodPosition,moodTwo,time,note))
             } while (result.moveToNext())
         }
-        Collections.sort(moodList,Comparator<MoodDetailAllModel> { o1, o2 -> SimpleDateFormat("dd/MM/yyyyhh:mm a").parse(o1.date+o1.time).compareTo(SimpleDateFormat("dd/MM/yyyyhh:mm a").parse(o2.date+o2.time)) })
-        if(moodList.size!= 0) tvNoEntryFound!!.visibility = View.GONE
+        Collections.sort(allEntriesList,Comparator<MoodDetailAllModel> { o1, o2 -> SimpleDateFormat("dd/MM/yyyyhh:mm a").parse(o1.date+o1.time).compareTo(SimpleDateFormat("dd/MM/yyyyhh:mm a").parse(o2.date+o2.time)) })
+        if(allEntriesList.size!= 0) tvNoEntryFound!!.visibility = View.GONE
         result.close()
+        dbHandler.close()
     }
 
     override fun delete(selectedMood : MoodDetailAllModel) {
-        moodList.remove(selectedMood)
+        allEntriesList.remove(selectedMood)
         adapter!!.notifyDataSetChanged()
-        if(moodList.size==0) tvNoEntryFound!!.visibility = View.VISIBLE
+        if(allEntriesList.size==0) tvNoEntryFound!!.visibility = View.VISIBLE
     }
 
     override fun onResume() {
         super.onResume()
-        moodList.removeAll(moodList)
+        allEntriesList.removeAll(allEntriesList)
         getAllMoodDetailsFromDatabase()
         adapter!!.notifyDataSetChanged()
     }

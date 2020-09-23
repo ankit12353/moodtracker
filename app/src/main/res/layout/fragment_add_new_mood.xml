@@ -11,12 +11,13 @@
         android:padding="@dimen/margin_20">
 
         <ImageView
-            android:id="@+id/iv_mood_image"
+            android:id="@+id/iv_add_new_mood"
+            android:src="@drawable/circular_border"
             android:layout_width="@dimen/emoji_size"
-            android:layout_height="@dimen/emoji_size"/>
+            android:layout_height="@dimen/emoji_size" />
 
         <EditText
-            android:id="@+id/et_mood_name_customize"
+            android:id="@+id/et_add_new_mood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -27,9 +28,8 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_customize_mood"
+        android:id="@+id/rv_add_new_mood"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_20"/>
-
+        android:layout_marginTop="@dimen/margin_20" />
 </LinearLayout>

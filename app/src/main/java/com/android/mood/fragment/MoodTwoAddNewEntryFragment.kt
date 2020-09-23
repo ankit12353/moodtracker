@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +22,7 @@ import com.android.mood.constants.Constant.*
 import com.android.mood.model.MoodBitmapModel
 import com.android.mood.model.MoodDetailAllModel
 import com.android.mood.model.MoodModel
+import kotlinx.android.synthetic.main.fragment_mood_two_add_new_entry.*
 
 class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
 
@@ -51,6 +53,8 @@ class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
         rvMoodTwo!!.setHasFixedSize(true)
         rvMoodTwo!!.adapter = MoodAdapter(mContext!!, moodTwoList, this)
 
+        v!!.findViewById<LinearLayout>(R.id.forward_btn_mood_two).setOnClickListener { openAllMoodTwoListFragment() }
+
         return v
     }
 
@@ -62,6 +66,10 @@ class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
         moodPosition = arguments?.getString(MOODPOSITION_MOOD_MOODTWO)
         mood = arguments?.getParcelable(MOODOBJECT_MOOD_MOODTWO)
         moodTwoList = dbHandler!!.getMoodTwoList()
+    }
+
+    private fun openAllMoodTwoListFragment(){
+
     }
 
     fun getSelectedMoodTwo() {

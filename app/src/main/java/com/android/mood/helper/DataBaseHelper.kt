@@ -6,11 +6,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.BitmapFactory
-import android.view.View
 import com.android.mood.model.MoodBitmapModel
 import com.android.mood.model.MoodDetailAllModel
-import com.google.android.material.snackbar.Snackbar
-import java.lang.Exception
+import kotlin.collections.ArrayList
 
 class DataBaseHelper(val mContext : Context, factory: SQLiteDatabase.CursorFactory?) : SQLiteOpenHelper(mContext ,DATABASE_NAME,factory,DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -38,15 +36,14 @@ class DataBaseHelper(val mContext : Context, factory: SQLiteDatabase.CursorFacto
         db.insert(TABLE_NAME,null,cv)
         db.close()
     }
-    fun addMood(name : String,image : ByteArray) : Boolean{
+    fun addMood(name : String,image : ByteArray) : Long{
         val cv = ContentValues()
         cv.put(MOOD_NAME, name)
         cv.put(MOOD_IMAGE, image)
         val db = this.writableDatabase
-        db.insert(TABLE_MOOD_LIST, null, cv)
+        val a = db.insert(TABLE_MOOD_LIST, null, cv)
         db.close()
-        return true
-
+        return a
     }
     fun addMoodTwo(name : String,image : ByteArray){
         val cv = ContentValues()
@@ -70,6 +67,7 @@ class DataBaseHelper(val mContext : Context, factory: SQLiteDatabase.CursorFacto
             } while (result.moveToNext())
         }
         result.close()
+        db.close()
         return moodList
     }
     fun getMoodTwoList() : ArrayList<MoodBitmapModel>{
@@ -90,18 +88,22 @@ class DataBaseHelper(val mContext : Context, factory: SQLiteDatabase.CursorFacto
     }
     fun getEntryDetail(date : String) : Cursor{
         val db = this.readableDatabase
-        val result = db.rawQuery("Select * from $TABLE_NAME Where $COLUMN_DATE = ?", arrayOf<String>(date))
-        return result
+        return db.rawQuery("Select * from $TABLE_NAME Where $COLUMN_DATE = ?", arrayOf(date))
     }
     fun getAllEntries() : Cursor{
         val db = this.readableDatabase
-        val result = db.rawQuery("Select * from $TABLE_NAME",null)
-        return result
+        return db.rawQuery("Select * from $TABLE_NAME",null)
     }
 
     fun deleteEntry(date : String,time : String){
         val db = this.writableDatabase
         db!!.delete(TABLE_NAME,"$COLUMN_DATE=? and $COLUMN_TIME=?", arrayOf(date,time))
+        db.close()
+    }
+    fun deleteMood(name : String){
+        val db = this.writableDatabase
+        db.delete(TABLE_MOOD_LIST,"$MOOD_NAME=?", arrayOf(name))
+        db.close()
     }
 
     companion object {

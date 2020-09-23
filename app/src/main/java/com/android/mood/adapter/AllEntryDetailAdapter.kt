@@ -10,12 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
-import com.android.mood.activity.MoodActivity
-import com.android.mood.model.MoodBitmapModel
 import com.android.mood.model.MoodDetailAllModel
-import com.android.mood.model.MoodModel
 
-class AllEntryDetailAdapter(private val mContext: Context, private val moodList : ArrayList<MoodDetailAllModel>, private val performOperation: PerformOperation) : RecyclerView.Adapter<AllEntryDetailAdapter.ViewHolder>(){
+class AllEntryDetailAdapter(private val mContext: Context, private val allEntriesList : ArrayList<MoodDetailAllModel>, private val performOperation: PerformOperation) : RecyclerView.Adapter<AllEntryDetailAdapter.ViewHolder>(){
     val sqliteHelper = DataBaseHelper(mContext, null)
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val date = view.findViewById<TextView>(R.id.tv_date)
@@ -33,11 +30,11 @@ class AllEntryDetailAdapter(private val mContext: Context, private val moodList 
     }
 
     override fun getItemCount(): Int {
-        return moodList.size
+        return allEntriesList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val mood = moodList[position]
+        val mood = allEntriesList[position]
         val list = sqliteHelper.getMoodList()
         holder.date.text = mood.date
         holder.mood.text = list[mood.moodPosition.toInt()].moodName
@@ -46,7 +43,7 @@ class AllEntryDetailAdapter(private val mContext: Context, private val moodList 
         holder.time.text = "("+mood.time+")"
         holder.note.text = "Note: "+mood.note
         holder.ivPerformOperation.setOnClickListener(View.OnClickListener {
-            performOperation(moodList[holder.adapterPosition],holder.ivPerformOperation)
+            performOperation(allEntriesList[holder.adapterPosition],holder.ivPerformOperation)
         })
     }
 
@@ -56,18 +53,19 @@ class AllEntryDetailAdapter(private val mContext: Context, private val moodList 
 
     private fun performOperation(selectedMood : MoodDetailAllModel, ivPerformOperation: ImageView) {
         val popupMenu = PopupMenu(mContext, ivPerformOperation)
-        popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
+        val menu = popupMenu.menu
+        popupMenu.menuInflater.inflate(R.menu.popup_menu, menu)
+        menu.findItem(R.id.popup_update).isVisible = false
+
         popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.popup_delete ->
-                    delete(selectedMood)
+                R.id.popup_delete ->{
+                    sqliteHelper.deleteEntry(selectedMood.date,selectedMood.time)
+                    performOperation.delete(selectedMood)
+                }
             }
             true
         })
         popupMenu.show()
-    }
-    private fun delete(selectedMood : MoodDetailAllModel){
-        sqliteHelper.deleteEntry(selectedMood.date,selectedMood.time)
-        performOperation.delete(selectedMood)
     }
 }

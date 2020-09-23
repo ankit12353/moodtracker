@@ -1,12 +1,10 @@
 package com.android.mood.utils
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
-import com.android.mood.R
 import java.io.ByteArrayOutputStream
+
 
 class Utils {
     fun formateDate(date : Int,month : Int,year : Int) : String{

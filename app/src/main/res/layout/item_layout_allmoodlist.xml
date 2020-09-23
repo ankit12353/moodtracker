@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_45"
+    android:layout_margin="@dimen/margin_5"
+    android:background="@color/white"
+    android:padding="@dimen/margin_5">
+
+    <ImageView
+        android:id="@+id/iv_allmoodlist"
+        android:layout_width="@dimen/margin_40"
+        android:layout_height="@dimen/margin_40"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:layout_marginLeft="@dimen/dimen_10"
+        android:src="@drawable/ic_edit" />
+
+    <TextView
+        android:id="@+id/tv_allmoodlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_allmoodlist"
+        android:layout_marginLeft="@dimen/dimen_10"
+        android:layout_toEndOf="@id/iv_allmoodlist"
+        android:layout_marginStart="@dimen/dimen_10" />
+
+    <ImageView
+        android:id="@+id/iv_modify_allmoodlist"
+        android:layout_width="@dimen/dimen_30"
+        android:layout_height="@dimen/dimen_30"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circular_border"
+        android:src="@drawable/ic_dropdown" />
+</RelativeLayout>

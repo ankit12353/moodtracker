@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_allmoodlist"
+        android:layout_marginHorizontal="@dimen/margin_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_addnewMood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/rectangular_border"
+        android:textAllCaps="false"
+        android:padding="@dimen/margin_5"
+        android:text="Add New Mood"/>
+
+</RelativeLayout>

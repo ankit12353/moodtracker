@@ -78,6 +78,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/margin_40" />
         <LinearLayout
+            android:id="@+id/edit_mood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -85,7 +86,6 @@
             android:layout_margin="@dimen/margin_15"
             android:layout_below="@id/rv_mood">
             <ImageView
-                android:id="@+id/iv_customize_mood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_9"
-                android:text="Edit Moods"/>
+                android:text="@string/text_edit_moods"/>
         </LinearLayout>
     </RelativeLayout>
 

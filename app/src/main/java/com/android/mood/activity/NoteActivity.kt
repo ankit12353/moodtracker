@@ -64,6 +64,7 @@ class NoteActivity : AppCompatActivity() ,AllEntryDetailAdapter.PerformOperation
             rv_entry_date.visibility = View.GONE
         }
         result.close()
+        dbHandler.close()
     }
 
     override fun delete(selectedMood : MoodDetailAllModel) {

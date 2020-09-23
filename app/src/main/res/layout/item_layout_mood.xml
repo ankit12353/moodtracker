@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_item_mood"
-    android:layout_width="@dimen/emoji2_width"
-    android:layout_height="@dimen/emoji2_height"
+    android:layout_width="@dimen/emoji_layout_width"
+    android:layout_height="@dimen/emoji_layout_height"
     android:layout_margin="@dimen/margin_3"
     android:padding="@dimen/margin_3">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_emoji"
-        android:layout_width="@dimen/dimen_62"
-        android:layout_height="@dimen/dimen_62"
+        android:layout_width="@dimen/emoji_size_large"
+        android:layout_height="@dimen/emoji_size_large"
         android:layout_centerHorizontal="true"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="30dp">

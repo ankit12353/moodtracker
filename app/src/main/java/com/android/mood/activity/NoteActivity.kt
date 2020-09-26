@@ -9,17 +9,15 @@ import com.android.mood.constants.Constant.*
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.adapter.AllEntryDetailAdapter
-import com.android.mood.model.MoodDetailAllModel
+import com.android.mood.model.AllEntryDetailModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.layout_topbar.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
-class NoteActivity : AppCompatActivity() ,AllEntryDetailAdapter.PerformOperation{
+class NoteActivity : AppCompatActivity(){
 
     private var date: String? = null
-    private var moodList : ArrayList<MoodDetailAllModel> = ArrayList()
+    private var allEntryList : ArrayList<AllEntryDetailModel> = ArrayList()
     private var adapter : AllEntryDetailAdapter?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,49 +26,20 @@ class NoteActivity : AppCompatActivity() ,AllEntryDetailAdapter.PerformOperation
 
         date = intent.extras?.getString(DATE)
         tv_date_topbar.text = date
-        getMoodOfSelectedDate()
+        allEntryList = DataBaseHelper(this,null).getEntryDetail(date!!)
+        if(allEntryList.size !=0 ) tv_no_entry.visibility = View.GONE
 
-        Collections.sort(moodList,Comparator<MoodDetailAllModel>{t1,t2 -> SimpleDateFormat("hh:mm a").parse(t1.time).compareTo(SimpleDateFormat("hh:mm a").parse(t2.time))})
         rv_entry_date.layoutManager = LinearLayoutManager(this)
         rv_entry_date.setHasFixedSize(true)
-        adapter = AllEntryDetailAdapter(this,moodList,this)
+        adapter = AllEntryDetailAdapter(this,allEntryList,tv_no_entry)
         rv_entry_date.adapter = adapter
 
-        back_btn_topbar.setOnClickListener(View.OnClickListener {
-            finish()
-        })
+        back_btn_topbar.setOnClickListener{ finish() }
 
-        rl_add_new_entry.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this@NoteActivity,MoodActivity::class.java)
-            intent.putExtra(DATE,date)
+        rl_add_new_entry.setOnClickListener {
+            val intent = Intent(this@NoteActivity, MoodActivity::class.java)
+            intent.putExtra(DATE, date)
             startActivity(intent)
-        })
-    }
-
-    private fun getMoodOfSelectedDate() {
-        val dbHandler = DataBaseHelper(this, null)
-        val result = dbHandler.getEntryDetail(date!!)
-        if (result.moveToFirst()) {
-            do {
-                rv_entry_date.visibility = View.VISIBLE
-                tvNoEntryFound.visibility = View.GONE
-                val moodPosition = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_POSI))
-                val moodTwo = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_MOOD_TWO))
-                val time = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_TIME))
-                val note = result.getString(result.getColumnIndex(DataBaseHelper.COLUMN_NOTE))
-                moodList.add(MoodDetailAllModel(date!!,moodPosition,moodTwo,time,note))
-            } while (result.moveToNext())
-        } else {
-            rv_entry_date.visibility = View.GONE
         }
-        result.close()
-        dbHandler.close()
     }
-
-    override fun delete(selectedMood : MoodDetailAllModel) {
-        moodList.remove(selectedMood)
-        adapter!!.notifyDataSetChanged()
-        if(moodList.size==0) tvNoEntryFound.visibility= View.VISIBLE
-    }
-
 }

@@ -10,19 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
-import com.android.mood.model.MoodDetailAllModel
+import com.android.mood.model.MoodBitmapModel
+import com.android.mood.model.AllEntryDetailModel
 
-class AllEntryDetailAdapter(private val mContext: Context, private val allEntriesList : ArrayList<MoodDetailAllModel>, private val performOperation: PerformOperation) : RecyclerView.Adapter<AllEntryDetailAdapter.ViewHolder>(){
+class AllEntryDetailAdapter(private val mContext: Context, private val allEntriesList : ArrayList<AllEntryDetailModel>, private val tvNoEntry :TextView) : RecyclerView.Adapter<AllEntryDetailAdapter.ViewHolder>(){
     val sqliteHelper = DataBaseHelper(mContext, null)
-    class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val date = view.findViewById<TextView>(R.id.tv_date)
-        val mood = view.findViewById<TextView>(R.id.tv_mood)
-        val moodTwo = view.findViewById<TextView>(R.id.tv_mood_two)
-        val moodImage = view.findViewById<ImageView>(R.id.iv_mood)
-        val time = view.findViewById<TextView>(R.id.tv_time)
-        val note = view.findViewById<TextView>(R.id.tv_note)
-        val ivPerformOperation = view.findViewById<ImageView>(R.id.iv_update_delete)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_entry,parent,false)
@@ -34,24 +26,31 @@ class AllEntryDetailAdapter(private val mContext: Context, private val allEntrie
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val mood = allEntriesList[position]
-        val list = sqliteHelper.getMoodList()
-        holder.date.text = mood.date
-        holder.mood.text = list[mood.moodPosition.toInt()].moodName
-        holder.moodTwo.text = mood.moodTwo
-        holder.moodImage.setImageBitmap(list[mood.moodPosition.toInt()].moodImage)
-        holder.time.text = "("+mood.time+")"
-        holder.note.text = "Note: "+mood.note
+        holder.bind(allEntriesList[position],sqliteHelper.getMoodList())
         holder.ivPerformOperation.setOnClickListener(View.OnClickListener {
             performOperation(allEntriesList[holder.adapterPosition],holder.ivPerformOperation)
         })
     }
+    class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
+        private val date = view.findViewById<TextView>(R.id.tv_date)
+        private val moodName = view.findViewById<TextView>(R.id.tv_mood)
+        private val moodTwoName = view.findViewById<TextView>(R.id.tv_mood_two)
+        private val moodImage = view.findViewById<ImageView>(R.id.iv_mood)
+        private val time = view.findViewById<TextView>(R.id.tv_time)
+        private val note = view.findViewById<TextView>(R.id.tv_note)
+        val ivPerformOperation: ImageView = view.findViewById(R.id.iv_update_delete)
 
-    interface PerformOperation{
-        fun delete(selectedMood : MoodDetailAllModel)
+        fun bind(entryObj : AllEntryDetailModel, moodList : ArrayList<MoodBitmapModel>){
+            date.text = entryObj.date
+            moodName.text = moodList[entryObj.moodPosition.toInt()].moodName
+            moodTwoName.text = entryObj.moodTwo
+            moodImage.setImageBitmap(moodList[entryObj.moodPosition.toInt()].moodImage)
+            time.text = "("+entryObj.time+")"
+            note.text = "Note: "+entryObj.note
+        }
     }
 
-    private fun performOperation(selectedMood : MoodDetailAllModel, ivPerformOperation: ImageView) {
+    private fun performOperation(selectedMood : AllEntryDetailModel, ivPerformOperation: ImageView) {
         val popupMenu = PopupMenu(mContext, ivPerformOperation)
         val menu = popupMenu.menu
         popupMenu.menuInflater.inflate(R.menu.popup_menu, menu)
@@ -60,8 +59,10 @@ class AllEntryDetailAdapter(private val mContext: Context, private val allEntrie
         popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.popup_delete ->{
-                    sqliteHelper.deleteEntry(selectedMood.date,selectedMood.time)
-                    performOperation.delete(selectedMood)
+                    sqliteHelper.deleteEntry(selectedMood.getId())
+                    allEntriesList.remove(selectedMood)
+                    notifyDataSetChanged()
+                    if(allEntriesList.size==0) tvNoEntry.visibility = View.VISIBLE
                 }
             }
             true

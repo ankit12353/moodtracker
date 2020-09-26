@@ -20,9 +20,7 @@ import com.android.mood.activity.NoteActivity
 import com.android.mood.adapter.MoodAdapter
 import com.android.mood.constants.Constant.*
 import com.android.mood.model.MoodBitmapModel
-import com.android.mood.model.MoodDetailAllModel
-import com.android.mood.model.MoodModel
-import kotlinx.android.synthetic.main.fragment_mood_two_add_new_entry.*
+import com.android.mood.model.AllEntryDetailModel
 
 class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
 
@@ -33,7 +31,7 @@ class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
     private var moodPosition: String? = null
     private var rvMoodTwo: RecyclerView? = null
     private var mood: MoodBitmapModel? = null
-    private var moodObject: MoodDetailAllModel? = null
+    private var allEntryObject: AllEntryDetailModel? = null
     private var moodTwoList : ArrayList<MoodBitmapModel> = ArrayList()
     private var dbHandler : DataBaseHelper?= null
 
@@ -85,11 +83,11 @@ class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
             }
         }
         //saving data to database
-        moodObject = MoodDetailAllModel(date!!, moodPosition!!, moodTwoText.toString(), time!!, note)
-        dbHandler!!.addEntry(moodObject!!)
+        allEntryObject = AllEntryDetailModel(date!!, moodPosition!!, moodTwoText.toString(), time!!, note)
+        dbHandler!!.addEntry(allEntryObject!!)
         val intent = Intent(mContext,NoteActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra(DATE,moodObject!!.date)
+        intent.putExtra(DATE,allEntryObject!!.date)
         startActivity(intent)
         (activity as MoodActivity).finishActivity()
     }

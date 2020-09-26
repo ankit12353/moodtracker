@@ -25,6 +25,7 @@
             android:background="@drawable/rectangular_border"
             android:hint="@string/text_enter_mood_name"
             android:padding="@dimen/margin_8" />
+        <requestFocus/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

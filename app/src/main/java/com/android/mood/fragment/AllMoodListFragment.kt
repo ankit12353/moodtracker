@@ -25,7 +25,7 @@ import com.android.mood.model.MoodBitmapModel
 import com.android.mood.utils.Utils
 
 
-class AllMoodListFragment : Fragment(){
+class AllMoodListFragment : Fragment(),AllMoodListAdapter.ModifyMoods{
     private var v : View?= null
     private var mContext : Context?= null
     private var rvAllMoodList : RecyclerView ?= null
@@ -43,7 +43,7 @@ class AllMoodListFragment : Fragment(){
         allMoodList = DataBaseHelper(mContext!!,null).getMoodList()
         rvAllMoodList!!.setHasFixedSize(true)
         rvAllMoodList!!.layoutManager = LinearLayoutManager(mContext!!)
-        adapter = AllMoodListAdapter(allMoodList,mContext!!)
+        adapter = AllMoodListAdapter(allMoodList,mContext!!,this)
         rvAllMoodList!!.adapter = adapter!!
 
         v!!.findViewById<Button>(R.id.btn_addnewMood).setOnClickListener { (activity as MoodActivity).openAddNewMoodFragment() }
@@ -53,4 +53,10 @@ class AllMoodListFragment : Fragment(){
     private fun init(){
         rvAllMoodList = v!!.findViewById(R.id.rv_allmoodlist)
     }
+
+    override fun onUpdateClicked(updateMood: MoodBitmapModel) {
+        (activity as MoodActivity).openUpdateMoodFragment(updateMood)
+    }
+
+
 }

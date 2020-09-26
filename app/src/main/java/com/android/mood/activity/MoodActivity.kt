@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.android.mood.R
 import com.android.mood.adapter.MoodAdapter
 import com.android.mood.constants.Constant.*
-import com.android.mood.fragment.AddNewMoodFragment
+import com.android.mood.fragment.AddUpdateMoodFragment
 import com.android.mood.fragment.AllMoodListFragment
 import com.android.mood.fragment.MoodTwoAddNewEntryFragment
 import com.android.mood.helper.DataBaseHelper
@@ -30,17 +29,19 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     private var date : String ?= null
     private var adapter : MoodAdapter?= null
     private var moodList : ArrayList<MoodBitmapModel> = ArrayList()
-    private val addNewMoodFragment = AddNewMoodFragment()
+    private val addNewMoodFragment = AddUpdateMoodFragment()
+    private var dbHelper : DataBaseHelper?= null
     private val moodTwoAddNewEntryFragment = MoodTwoAddNewEntryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mood)
 
-        moodList = DataBaseHelper(this,null).getMoodList()
+        dbHelper= DataBaseHelper(this,null)
+        moodList = dbHelper!!.getMoodList()
         date = intent.extras?.getString(DATE)
 
-        time = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+        time = SimpleDateFormat("KK:mm a", Locale.getDefault()).format(Date())
         tv_date_dialog.text = date!!
         tv_time_dialog.text = time!!
         tv_date_topbar.text = date!!
@@ -66,6 +67,7 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     }
 
     private fun openAllMoodFragment(){
+        tv_date_topbar.visibility = View.GONE
         container.visibility = View.GONE
         container_fragment.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction()
@@ -77,6 +79,19 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
 
     fun openAddNewMoodFragment(){
         iv_forward_btn.visibility = View.VISIBLE
+        addNewMoodFragment.arguments = null
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_fragment, addNewMoodFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun openUpdateMoodFragment(updateMood : MoodBitmapModel){
+        iv_forward_btn.visibility = View.VISIBLE
+        val bundle = Bundle()
+        bundle.putParcelable(MOODOBJECT_MOOD_MOODTWO,updateMood)
+        addNewMoodFragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_fragment, addNewMoodFragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -148,10 +163,11 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         finish()
     }
 
-    private fun performBackBtn() {
+    fun performBackBtn() {
         when {
             addNewMoodFragment.isVisible -> {
                 (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(this.currentFocus!!.windowToken,0)
+                addNewMoodFragment.clearData()
                 supportFragmentManager.popBackStack()
                 iv_forward_btn.visibility = View.GONE
             }
@@ -163,6 +179,10 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
                 container.visibility = View.VISIBLE
                 container_fragment.visibility = View.GONE
                 iv_forward_btn.visibility = View.GONE
+                tv_date_topbar.visibility = View.VISIBLE
+                moodList.removeAll(moodList)
+                moodList.addAll(dbHelper!!.getMoodList())
+                adapter!!.notifyDataSetChanged()
             }
             else -> {
                 finish()
@@ -173,11 +193,4 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
     override fun onBackPressed() {
         performBackBtn()
     }
-
-    fun getCustomizeMood(custMood : MoodBitmapModel){
-        performBackBtn()
-        moodList.add(custMood)
-        adapter!!.notifyDataSetChanged()
-    }
-
 }

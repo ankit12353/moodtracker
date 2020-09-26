@@ -6,12 +6,14 @@ import android.os.Parcelable
 
 data class MoodBitmapModel(val moodName: String , val moodImage: Bitmap) : Parcelable{
     private var isSelected : Boolean = false
+    private var id : Int ?= null
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readParcelable(Bitmap::class.java.classLoader)!!
     ) {
         isSelected = parcel.readByte() != 0.toByte()
+        id = parcel.readValue(Int::class.java.classLoader) as? Int
     }
 
     fun isSelected() : Boolean{
@@ -20,11 +22,18 @@ data class MoodBitmapModel(val moodName: String , val moodImage: Bitmap) : Parce
     fun setSelected(selected : Boolean){
         isSelected = selected
     }
+    fun setId(gId : Int){
+        id = gId
+    }
+    fun getId() : Int{
+        return id!!
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(moodName)
         parcel.writeParcelable(moodImage, flags)
         parcel.writeByte(if (isSelected) 1 else 0)
+        parcel.writeValue(id)
     }
 
     override fun describeContents(): Int {

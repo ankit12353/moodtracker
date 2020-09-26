@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
         <TextView
-            android:id="@+id/tvNoEntryFound"
+            android:id="@+id/tv_no_entry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextHeader"

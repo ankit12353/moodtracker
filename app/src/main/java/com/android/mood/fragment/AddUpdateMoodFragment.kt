@@ -32,7 +32,8 @@ class AddUpdateMoodFragment : Fragment() ,CustomizeMoodAdapter.ImageSelected{
     private var ivAddNewMood : ImageView ?= null
     private var isUpdate : Boolean = false
     private var updateMood : MoodBitmapModel?= null
-    private val customizeMoods = arrayOf(R.drawable.happy,R.drawable.meh)
+    private val customizeMoods = arrayOf(R.drawable.happy,R.drawable.meh,R.drawable.okay,R.drawable.sad,R.drawable.pain,R.drawable.m1,R.drawable.m2,R.drawable.m3,R.drawable.m4,R.drawable.m5,R.drawable.m6,R.drawable.m7,
+        R.drawable.m8,R.drawable.m9,R.drawable.m10,R.drawable.m11,R.drawable.m12,R.drawable.m13,R.drawable.m14,R.drawable.m15,R.drawable.m16,R.drawable.m17,R.drawable.m18,R.drawable.m19,R.drawable.m20,R.drawable.m21,R.drawable.m22,R.drawable.m23,R.drawable.m24,R.drawable.m25)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -75,9 +76,9 @@ class AddUpdateMoodFragment : Fragment() ,CustomizeMoodAdapter.ImageSelected{
             }
         }
         when {
-            moodName.isEmpty() -> { etAddNewMood!!.error = "Required"}
-            ifNameExist -> { etAddNewMood!!.error ="Mood Name already exists" }
-            !isUpdate && selectedImagePosi ==null -> { Toast.makeText(mContext!!,"Select any image", Toast.LENGTH_SHORT).show() }
+            moodName.isEmpty() -> { etAddNewMood!!.error = getString(R.string.text_required)}
+            ifNameExist -> { etAddNewMood!!.error =getString(R.string.text_already_exist) }
+            !isUpdate && selectedImagePosi ==null -> { Toast.makeText(mContext!!,getString(R.string.text_select_any_image), Toast.LENGTH_SHORT).show() }
             else -> {
                 var moodImage : ByteArray ?= null
                 if (selectedImagePosi!=null) moodImage= Utils().drawableToByteArray(customizeMoods[selectedImagePosi!!],mContext!!)

@@ -89,11 +89,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container_bottomnav, entriesFragment)
-            .commit()
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.container_bottomnav, entriesFragment)
+//            .commit()
     }
-    fun saveArrayLists(){
+    private fun saveArrayLists(){
         val moodList = arrayListOf<MoodModel>(
             MoodModel("Happy",R.drawable.happy),
             MoodModel("Meh",R.drawable.meh),

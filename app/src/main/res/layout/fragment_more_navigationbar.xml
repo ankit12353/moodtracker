@@ -1,10 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/text_more"
-        android:layout_centerInParent="true"/>
-</RelativeLayout>
+        android:layout_margin="@dimen/dimen_10"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/select_image"
+            android:layout_width="@dimen/emoji_size_large"
+            android:layout_height="@dimen/emoji_size_large"
+            android:layout_margin="@dimen/dimen_10"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="30dp">
+
+            <ImageView
+                android:id="@+id/iv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/upload" />
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/layout_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+            <TextView
+                android:id="@+id/tv_user_name"
+                style="@style/TextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:text="Enter Username" />
+
+            <EditText
+                android:id="@+id/et_user_name"
+                android:layout_width="@dimen/dimen_156"
+                android:layout_height="wrap_content"
+                android:hint="Enter name"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_edit_username"
+            android:layout_width="@dimen/dimen_23"
+            android:layout_height="@dimen/dimen_23"
+            android:layout_toEndOf="@id/layout_name"
+            android:layout_toRightOf="@id/layout_name"
+            android:background="@drawable/circular_border"
+            android:layout_marginTop="@dimen/margin_15"
+            android:padding="@dimen/margin_2"
+            android:src="@drawable/ic_edit" />
+    </RelativeLayout>
+</LinearLayout>

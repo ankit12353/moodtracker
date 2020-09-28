@@ -11,8 +11,13 @@
     <string name="text_oops_no_entry_found">Oops! No Entry Found</string>
     <string name="text_update">Update</string>
     <string name="text_delete">Delete</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_enter_mood_name">Enter mood name</string>
     <string name="text_edit_moods">Edit Moods</string>
+    <string name="text_take_photo">Take Photo</string>
+    <string name="text_choose_from_gallery">Choose from Gallery</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_add_photo">Add Photo!</string>
+    <string name="text_required">Required</string>
+    <string name="text_already_exist">Mood Name already exists</string>
+    <string name="text_select_any_image">Select any image</string>
 </resources>

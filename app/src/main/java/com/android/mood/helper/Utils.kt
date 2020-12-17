@@ -1,12 +1,18 @@
-package com.android.mood.utils
+package com.android.mood.helper
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
-class Utils {
+object Utils {
     fun formateDate(date : Int,month : Int,year : Int) : String{
         val dateS : String
         val monthS : String

@@ -1,22 +1,17 @@
 package com.android.mood.fragment
 
-import android.app.TimePickerDialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.Fragment
-import com.android.mood.constants.Constant.*
 import com.android.mood.R
 import com.android.mood.activity.NoteActivity
-import com.android.mood.utils.Utils
-import java.lang.StringBuilder
-import java.text.SimpleDateFormat
+import com.android.mood.helper.Constant
+import com.android.mood.helper.Utils
 import java.util.*
 
 class CalendarFragmentBottomNavigation : Fragment() {
@@ -35,9 +30,9 @@ class CalendarFragmentBottomNavigation : Fragment() {
         val calendar = Calendar.getInstance()
         calendarView!!.maxDate = calendar.timeInMillis
         calendarView?.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val date = Utils().formateDate(dayOfMonth,(month+1),year)
+            val date = Utils.formateDate(dayOfMonth,(month+1),year)
             val intent = Intent(activity,NoteActivity::class.java)
-            intent.putExtra(DATE,date)
+            intent.putExtra(Constant.DATE,date)
             activity?.startActivity(intent)
         }
         return v

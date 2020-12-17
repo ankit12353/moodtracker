@@ -18,7 +18,10 @@ import com.android.mood.helper.DataBaseHelper
 import com.android.mood.activity.MoodActivity
 import com.android.mood.activity.NoteActivity
 import com.android.mood.adapter.MoodAdapter
-import com.android.mood.constants.Constant.*
+import com.android.mood.helper.Constant.DATE
+import com.android.mood.helper.Constant.MOODOBJECT_MOOD_MOODTWO
+import com.android.mood.helper.Constant.MOODPOSITION_MOOD_MOODTWO
+import com.android.mood.helper.Constant.TIME_MOOD_MOODTWO
 import com.android.mood.model.MoodBitmapModel
 import com.android.mood.model.AllEntryDetailModel
 
@@ -59,7 +62,7 @@ class MoodTwoAddNewEntryFragment : Fragment(),MoodAdapter.MoodSelected {
     private fun init() {
         rvMoodTwo = v!!.findViewById<RecyclerView>(R.id.rv_mood_two)
         dbHandler = DataBaseHelper(mContext!!,null)
-        date = arguments?.getString(DATE_MOOD_MOODTWO)
+        date = arguments?.getString(DATE)
         time = arguments?.getString(TIME_MOOD_MOODTWO)
         moodPosition = arguments?.getString(MOODPOSITION_MOOD_MOODTWO)
         mood = arguments?.getParcelable(MOODOBJECT_MOOD_MOODTWO)

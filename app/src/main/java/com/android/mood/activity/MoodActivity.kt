@@ -11,13 +11,16 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.mood.R
 import com.android.mood.adapter.MoodAdapter
-import com.android.mood.constants.Constant.*
 import com.android.mood.fragment.AddUpdateMoodFragment
 import com.android.mood.fragment.AllMoodListFragment
 import com.android.mood.fragment.MoodTwoAddNewEntryFragment
+import com.android.mood.helper.Constant.DATE
+import com.android.mood.helper.Constant.MOODOBJECT_MOOD_MOODTWO
+import com.android.mood.helper.Constant.MOODPOSITION_MOOD_MOODTWO
+import com.android.mood.helper.Constant.TIME_MOOD_MOODTWO
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.model.MoodBitmapModel
-import com.android.mood.utils.Utils
+import com.android.mood.helper.Utils
 import kotlinx.android.synthetic.main.activity_mood.*
 import kotlinx.android.synthetic.main.layout_topbar.*
 import java.text.SimpleDateFormat
@@ -104,7 +107,7 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
         container.visibility = View.GONE
         container_fragment.visibility = View.VISIBLE
         val bundle = Bundle()
-        bundle.putString(DATE_MOOD_MOODTWO,date!!)
+        bundle.putString(DATE,date!!)
         bundle.putString(TIME_MOOD_MOODTWO,time!!)
         bundle.putParcelable(MOODOBJECT_MOOD_MOODTWO,MoodBitmapModel(moodList[moodPosition].moodName,moodList[moodPosition].moodImage))
         bundle.putString(MOODPOSITION_MOOD_MOODTWO,moodPosition.toString())
@@ -128,8 +131,8 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
                 if (datetime[Calendar.AM_PM] == Calendar.AM) am_pm ="AM"
                 else if (datetime[Calendar.AM_PM] == Calendar.PM) am_pm = "PM"
 
-                val hr = Utils().timeTotwelvehr(hourOfDay)
-                time= Utils().formateTime(hr,minute,am_pm)
+                val hr = Utils.timeTotwelvehr(hourOfDay)
+                time= Utils.formateTime(hr,minute,am_pm)
                 tv_time_dialog!!.text = time
             },currentHour,currentMinute,false)
         mTimePicker.show()
@@ -143,7 +146,7 @@ class MoodActivity : AppCompatActivity() , MoodAdapter.MoodSelected{
 
         val mDatePicker = DatePickerDialog(this,
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                date = Utils().formateDate(dayOfMonth,(month+1),year)
+                date = Utils.formateDate(dayOfMonth,(month+1),year)
                 tv_date_dialog.text = date!!
                 tv_date_topbar.text = date!!
             },mYear,mMonth,mDay)

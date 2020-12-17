@@ -1,8 +1,6 @@
 package com.android.mood.fragment
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.mood.R
 import com.android.mood.activity.MoodActivity
 import com.android.mood.adapter.CustomizeMoodAdapter
-import com.android.mood.constants.Constant.MOODOBJECT_MOOD_MOODTWO
+import com.android.mood.helper.Constant.MOODOBJECT_MOOD_MOODTWO
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.model.MoodBitmapModel
-import com.android.mood.utils.Utils
-import java.io.ByteArrayOutputStream
+import com.android.mood.helper.Utils
 
 
 class AddUpdateMoodFragment : Fragment() ,CustomizeMoodAdapter.ImageSelected{
@@ -81,7 +78,7 @@ class AddUpdateMoodFragment : Fragment() ,CustomizeMoodAdapter.ImageSelected{
             !isUpdate && selectedImagePosi ==null -> { Toast.makeText(mContext!!,getString(R.string.text_select_any_image), Toast.LENGTH_SHORT).show() }
             else -> {
                 var moodImage : ByteArray ?= null
-                if (selectedImagePosi!=null) moodImage= Utils().drawableToByteArray(customizeMoods[selectedImagePosi!!],mContext!!)
+                if (selectedImagePosi!=null) moodImage= Utils.drawableToByteArray(customizeMoods[selectedImagePosi!!],mContext!!)
                 if(isUpdate){
                     if(selectedImagePosi==null){
                         dbHelper.updateMoodName(updateMood!!.getId(),moodName)

@@ -1,34 +1,41 @@
 package com.android.mood.fragment
 
 import android.Manifest
-import android.R.attr
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import com.android.mood.R
-import io.paperdb.Paper
+import com.android.mood.activity.SplashActivity
+import com.android.mood.helper.Constant
+import com.android.mood.helper.Constant.LANGUAGE
+import com.android.mood.helper.LocaleHelper
+import kotlinx.android.synthetic.main.fragment_more_navigationbar.view.*
 import java.io.*
+import java.util.*
 
 
 class MoreFragmentBottomNavigation : Fragment() {
@@ -38,6 +45,8 @@ class MoreFragmentBottomNavigation : Fragment() {
     private var ivEdit : ImageView?= null
     private var etUserName : EditText ?= null
     private var tvUserName : TextView ?= null
+    private var sp : SharedPreferences?= null
+    private var rlChangeLanguage: RelativeLayout ?= null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,6 +58,7 @@ class MoreFragmentBottomNavigation : Fragment() {
 
         v!!.findViewById<CardView>(R.id.select_image).setOnClickListener { selectImage() }
         ivEdit!!.setOnClickListener { editUserName() }
+        rlChangeLanguage!!.setOnClickListener { openLanguagePopup()}
 
         return v
     }
@@ -57,8 +67,37 @@ class MoreFragmentBottomNavigation : Fragment() {
         ivEdit = v!!.findViewById(R.id.iv_edit_username)
         etUserName = v!!.findViewById(R.id.et_user_name)
         tvUserName = v!!.findViewById(R.id.tv_user_name)
-        val name = Paper.book().read<String>(userName)
-        if(name != "") tvUserName!!.text=name
+        rlChangeLanguage = v!!.findViewById(R.id.rl_change_language)
+        sp = activity!!.getSharedPreferences(Constant.PREFERENCE,Context.MODE_PRIVATE)
+        val file = Utility.readImageFromInternalStorage(activity!!)
+        if(file!= null) ivUser!!.setImageDrawable(Drawable.createFromPath(file.toString())) else ivUser!!.setImageResource(R.drawable.upload)
+
+        val name = sp!!.getString(userName,"")
+        if(name != null && name !="") tvUserName!!.text=name else tvUserName!!.text= resources.getString(R.string.text_enter_username)
+    }
+
+    private fun openLanguagePopup(){
+        val popupMenu = PopupMenu(mContext, rlChangeLanguage!!)
+        val menu = popupMenu.menu
+        popupMenu.menuInflater.inflate(R.menu.language_menu, menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.language_default -> {
+                    changeLanguage(Locale.getDefault().language)
+                }
+                R.id.language_hindi -> {
+                    changeLanguage("hi")
+                }
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun changeLanguage(language : String){
+        LocaleHelper.setLocale(mContext!!,language)
+        sp!!.edit().putString(LANGUAGE,language).apply()
+        activity!!.recreate()
     }
 
     private fun editUserName() {
@@ -69,16 +108,15 @@ class MoreFragmentBottomNavigation : Fragment() {
             ivEdit!!.setImageResource(R.drawable.ic_tick)
         } else {
             val name = etUserName!!.text.trim().toString()
-            if(name == ""){
-                etUserName!!.error = getString(R.string.text_required)
-            } else {
-                (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(v!!.windowToken,0)
-                Paper.book().write(userName,name)
+            if(name != "") {
+                sp!!.edit().putString(userName,name).apply()
                 tvUserName!!.text = name
-                etUserName!!.visibility = View.GONE
-                tvUserName!!.visibility = View.VISIBLE
-                ivEdit!!.setImageResource(R.drawable.ic_edit)
             }
+            (activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(v!!.windowToken,0)
+            etUserName!!.visibility = View.GONE
+            tvUserName!!.visibility = View.VISIBLE
+            ivEdit!!.setImageResource(R.drawable.ic_edit)
+            etUserName!!.setText("")
         }
     }
 
@@ -108,12 +146,22 @@ class MoreFragmentBottomNavigation : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == cameraCode){
-            val bytes = ByteArrayOutputStream()
-            val thumbnail = data!!.extras!!.get("data") as Bitmap
-            thumbnail.compress(Bitmap.CompressFormat.JPEG,90,bytes)
-            val destination = File(Environment.getExternalStorageDirectory(),System.currentTimeMillis().toString() + ".jpg")
-            val fo: FileOutputStream
+            cameraResult(data)
+        } else if(requestCode == galleryCode){
+            galleryResult(data)
+        }
+    }
+
+    //camera and gallery results
+    private fun cameraResult(data: Intent?){
+        val bytes = ByteArrayOutputStream()
+        if(data != null) {
+            var image : Bitmap?= null
             try {
+                image = data.extras!!.get("data") as Bitmap
+                image.compress(Bitmap.CompressFormat.JPEG,90,bytes)
+                val destination = File(Environment.getExternalStorageDirectory(),System.currentTimeMillis().toString() + ".jpg")
+                val fo: FileOutputStream
                 destination.createNewFile()
                 fo = FileOutputStream(destination)
                 fo.write(bytes.toByteArray())
@@ -123,21 +171,24 @@ class MoreFragmentBottomNavigation : Fragment() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            ivUser!!.setImageBitmap(thumbnail)
-        } else if(requestCode == galleryCode){
-            var bitmap : Bitmap ?= null
-            if(data!=null){
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(mContext!!.contentResolver,data.data!!)
-                } catch (e : IOException){
-                    e.printStackTrace()
-                }
-                ivUser!!.setImageBitmap(bitmap!!)
+            Utility.saveImageToInternalStorage(image!!,activity!!)
+            ivUser!!.setImageBitmap(image)
+        }
+    }
+    private fun galleryResult(data: Intent?){
+        var image: Bitmap? = null
+        if (data != null) {
+            try {
+                image = MediaStore.Images.Media.getBitmap(mContext!!.contentResolver, data.data!!)
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
+            Utility.saveImageToInternalStorage(image!!,activity!!)
+            ivUser!!.setImageBitmap(image)
         }
     }
 
-    object Utility {
+    private object Utility {
         private const val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -148,8 +199,8 @@ class MoreFragmentBottomNavigation : Fragment() {
                     if (ActivityCompat.shouldShowRequestPermissionRationale((context as Activity?)!!,Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         val alertBuilder = AlertDialog.Builder(context)
                         alertBuilder.setCancelable(true)
-                        alertBuilder.setTitle("Permission necessary")
-                        alertBuilder.setMessage("External storage permission is necessary")
+                        alertBuilder.setTitle(context.getString(R.string.text_permission_necessary))
+                        alertBuilder.setMessage(context.getString(R.string.text_external_permission_necessary))
                         alertBuilder.setPositiveButton(android.R.string.yes) { dialog, which ->
                             ActivityCompat.requestPermissions((context as Activity?)!!,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE)
                         }
@@ -166,12 +217,39 @@ class MoreFragmentBottomNavigation : Fragment() {
                 true
             }
         }
+
+        fun saveImageToInternalStorage (bitmap: Bitmap,activity : Activity){
+            val cw = ContextWrapper(activity.applicationContext)
+            val directory: File = cw.getDir(imageDirectory, Context.MODE_PRIVATE)
+            val file = File(directory, "$userImageName.jpg")
+            Log.d("path", file.toString())
+            var fos: FileOutputStream? = null
+            try {
+                fos = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                fos.flush()
+                fos.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
+        fun readImageFromInternalStorage(activity: Activity) : File?{
+            val cw = ContextWrapper(activity.applicationContext)
+            val directory = cw.getDir(imageDirectory,Context.MODE_PRIVATE)
+            val file =  File(directory,"$userImageName.jpg")
+            if(file.exists()){
+                return file
+            }
+            return null
+        }
     }
 
     companion object {
         private const val cameraCode : Int = 1
         private const val galleryCode : Int = 2
         private const val userName : String="name"
-        private const val userImage : String="image"
+        private const val userImageName : String="cameraImage"
+        private const val imageDirectory : String="imageDir"
     }
 }

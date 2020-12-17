@@ -14,9 +14,9 @@
         android:icon="@drawable/ic_add_entry"
         android:title="@string/text_add_entry" />
     <item
-        android:id="@+id/navigation_stats"
+        android:id="@+id/navigation_news"
         android:icon="@drawable/ic_stats"
-        android:title="@string/text_stats" />
+        android:title="@string/text_news" />
     <item
         android:id="@+id/navigation_more"
         android:icon="@drawable/ic_more"

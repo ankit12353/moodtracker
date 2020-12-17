@@ -1,21 +1,23 @@
 package com.android.mood.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.android.mood.R
-import com.android.mood.constants.Constant.*
 import com.android.mood.fragment.CalendarFragmentBottomNavigation
 import com.android.mood.fragment.EntriesFragmentBottomNavigation
 import com.android.mood.fragment.MoreFragmentBottomNavigation
-import com.android.mood.fragment.StatsFragmentBottomNavigation
+import com.android.mood.fragment.NewsFragmentBottomNavigation
+import com.android.mood.helper.Constant.DATE
+import com.android.mood.helper.Constant.PREFERENCE
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.model.MoodModel
-import com.android.mood.utils.Utils
+import com.android.mood.helper.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import io.paperdb.Paper
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,18 +25,19 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var calendarFragment: CalendarFragmentBottomNavigation
-    private lateinit var statsFragment: StatsFragmentBottomNavigation
+    private lateinit var newsFragment: NewsFragmentBottomNavigation
     private lateinit var entriesFragment: EntriesFragmentBottomNavigation
     private lateinit var moreFragment: MoreFragmentBottomNavigation
+    private var sp : SharedPreferences?= null
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Paper.init(this)
-
+        sp = getSharedPreferences(PREFERENCE,Context.MODE_PRIVATE)
         //async task to be added
-        if(Paper.book().read<String>(LIST_SAVED) == "yes") {
+        val isListSaved = sp!!.getBoolean(LIST_SAVED,false)
+        if(isListSaved) {
             //do nothing
         } else { saveArrayLists()}
 
@@ -68,10 +71,10 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra(DATE, date)
                     startActivity(intent)
                 }
-                R.id.navigation_stats -> {
-                    statsFragment = StatsFragmentBottomNavigation()
+                R.id.navigation_news -> {
+                    newsFragment = NewsFragmentBottomNavigation()
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.container_bottomnav, statsFragment)
+                        .replace(R.id.container_bottomnav, newsFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                 }
@@ -118,14 +121,18 @@ class MainActivity : AppCompatActivity() {
         val dbHelper = DataBaseHelper(this,null)
         for (i in 0 until moodList.size){
             val name = moodList[i].moodName
-            val image = Utils().drawableToByteArray(moodList[i].moodImage,this@MainActivity)
+            val image = Utils.drawableToByteArray(moodList[i].moodImage,this@MainActivity)
             dbHelper.addMood(name,image)
         }
         for (i in 0 until moodTwoList.size){
             val name = moodTwoList[i].moodName
-            val image = Utils().drawableToByteArray(moodTwoList[i].moodImage,this)
+            val image = Utils.drawableToByteArray(moodTwoList[i].moodImage,this)
             dbHelper.addMoodTwo(name, image)
         }
-        Paper.book().write(LIST_SAVED,"yes")
+        sp!!.edit().putBoolean(LIST_SAVED,true).apply()
+    }
+
+    companion object{
+        private const val LIST_SAVED = "lists"
     }
 }

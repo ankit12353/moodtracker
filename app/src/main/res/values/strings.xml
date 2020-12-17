@@ -18,6 +18,14 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_add_photo">Add Photo!</string>
     <string name="text_required">Required</string>
-    <string name="text_already_exist">Mood Name already exists</string>
+    <string name="text_already_exist">Mood name already exists</string>
     <string name="text_select_any_image">Select any image</string>
+    <string name="text_enter_username">Enter Username</string>
+    <string name="text_permission_necessary">Permission necessary</string>
+    <string name="text_external_permission_necessary">External storage permission is necessary</string>
+    <string name="text_change_language">Change Language</string>
+    <string name="text_add_new_mood">Add New Mood</string>
+    <string name="text_news">News</string>
+    <string name="text_hindi">Hindi</string>
+    <string name="text_default">Default</string>
 </resources>

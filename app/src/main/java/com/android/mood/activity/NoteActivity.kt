@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.mood.constants.Constant.*
 import com.android.mood.R
 import com.android.mood.helper.DataBaseHelper
 import com.android.mood.adapter.AllEntryDetailAdapter
+import com.android.mood.helper.Constant.DATE
 import com.android.mood.model.AllEntryDetailModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.layout_topbar.*

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoodTracker</string>
+    <string name="text_entries">प्रविष्टियों</string>
+    <string name="text_stats">आँकड़े</string>
+    <string name="text_calendar">कैलेंडर</string>
+    <string name="text_more">अधिक</string>
+    <string name="text_add_entry">प्रविष्टि जोड़ें</string>
+    <string name="text_add_a_new_entry">एक नई प्रविष्टि जोड़ें</string>
+    <string name="text_tell_us_about_your_mood">Tell us about your mood</string>
+    <string name="text_what_have_you_been_up_to">तुम अब तक क्या कर रहे हो?</string>
+    <string name="text_oops_no_entry_found">उफ़! नो एंट्री मिली</string>
+    <string name="text_update">अद्यतन</string>
+    <string name="text_delete">हटाएँ</string>
+    <string name="text_enter_mood_name">Enter mood name</string>
+    <string name="text_edit_moods">Edit Moods</string>
+    <string name="text_take_photo">फोटो लें</string>
+    <string name="text_choose_from_gallery">Choose from Gallery</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_add_photo">Add Photo!</string>
+    <string name="text_required">आवश्यक</string>
+    <string name="text_already_exist">Mood name already exists</string>
+    <string name="text_select_any_image">किसी भी छवि का चयन करें</string>
+    <string name="text_enter_username">Enter Username</string>
+    <string name="text_permission_necessary">Permission necessary</string>
+    <string name="text_external_permission_necessary">External storage permission is necessary</string>
+    <string name="text_change_language">भाषा बदलें</string>
+    <string name="text_add_new_mood">Add New Mood</string>
+</resources>

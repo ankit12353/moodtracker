@@ -20,6 +20,6 @@
         android:background="@drawable/rectangular_border"
         android:textAllCaps="false"
         android:padding="@dimen/margin_5"
-        android:text="Add New Mood"/>
+        android:text="@string/text_add_new_mood"/>
 
 </RelativeLayout>
